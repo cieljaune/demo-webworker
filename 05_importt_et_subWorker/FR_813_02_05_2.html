@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Web Worker 05</title>
+	<script>
+	window.onload = function(){
+		var bt = document.getElementById('button')
+		var txt = document.getElementById('texte')
+    	if(window.Worker){
+			
+			var worker = new Worker("FR_813_02_05-2.js");
+			worker.addEventListener('message', retourWorker, false);
+			bt.addEventListener('click', function(evt){
+				worker.postMessage(txt.value);
+			}, false)
+			
+		}else{
+		    alert("No Workers");
+		}
+		
+		function retourWorker(evt) {
+		  console.log(evt.data);
+		}
+		
+		
+	}
+    </script>
+</head>
+<body>
+      <label for="texte">Texte:</label>
+      <input type="text" name="texte" id="texte">
+      <input type="button" name="button" id="button" value="Envoyer">
+</body>
+</html>

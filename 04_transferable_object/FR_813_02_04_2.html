@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Web Worker 04</title>
+	<script>
+	window.onload = function(){
+		var bt = document.getElementById('button')
+		var donnees = new Uint8Array(1024*1024*100); 
+		
+		for (var i = 0, nb = donnees.length; i < nb; ++i) {
+		  donnees[i] = i;
+		}
+		
+    	if(window.Worker){
+			var worker = new Worker("FR_813_02_04_2.js");
+			worker.addEventListener('message', retourWorker, false);
+			bt.addEventListener('click', function(evt){
+				worker.postMessage(donnees.buffer, [donnees.buffer]);
+			}, false)
+			
+		}else{
+		    alert("No Workers");
+		}
+		
+		function retourWorker(evt) {
+			console.log('sur le HTML: ' + donnees.buffer.byteLength)
+		}
+		
+		
+	}
+    </script>
+</head>
+<body>
+<input type="button" name="button" id="button" value="Envoyer">
+</body>
+</html>

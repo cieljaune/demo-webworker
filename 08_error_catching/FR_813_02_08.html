@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Web Worker 08</title>
+	<script>
+	window.onload = function(){
+		var bt = document.getElementById('button')
+		var txt = document.getElementById('texte')
+    	
+		
+		if(window.Worker){
+			
+			var worker = new Worker("FR_813_02_08.js");
+			worker.addEventListener('message', retourWorker, false);
+			worker.addEventListener('error', erreurWorker, false);
+			
+			bt.addEventListener('click', function(evt){
+				worker.postMessage();
+			}, false)
+			
+		}else{
+		    alert("No Workers");
+		}
+		
+		function retourWorker(evt) {
+		  console.log(evt.data);
+		}
+		
+		function erreurWorker(evt) {
+			var msgErreur = ''
+			msgErreur += 'ERREUR: Ligne ' + evt.lineno + '\n'
+			msgErreur += ' sur le fichier ' +  evt.filename + '\n'
+			msgErreur += ' MSG ' + evt.message
+		  console.log(msgErreur);
+		}
+		
+	}
+    </script>
+</head>
+<body>
+<input type="button" name="button" id="button" value="Envoyer">
+</body>
+</html>

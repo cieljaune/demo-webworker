@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Web Worker 06</title>
+	<script>
+	window.onload = function(){
+		var bt = document.getElementById('button')
+		var txt = document.getElementById('texte')
+			
+    	if(window.SharedWorker){
+			var workerPartage = new SharedWorker("FR_813_02_06.js");
+			workerPartage.port.addEventListener('message', retourWorkerPartage, false);
+			workerPartage.port.start();
+			bt.addEventListener('click', function(evt){
+				workerPartage.port.postMessage("P1:" + txt.value);
+			}, false)
+			
+		}else{
+		    alert("No Workers Partagés");
+		}
+		
+		function retourWorkerPartage(evt) {
+		  console.log(evt.data);
+		}
+		
+		
+	}
+    </script>
+</head>
+<body>
+      <label for="texte">Page Française:</label>
+      <input type="text" name="texte" id="texte">
+      <input type="button" name="button" id="button" value="Envoyer">
+</body>
+</html>

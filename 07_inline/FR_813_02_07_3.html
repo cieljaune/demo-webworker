@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Web Worker 07</title>
+    <script id="ilw" type="javascript/worker">
+		
+		self.addEventListener('message', envoiWorker, false);
+		function envoiWorker(evt) {
+		  self.postMessage('Envoi depuis le worker inclut dans le thread principal: '+ evt.data);
+		}
+	
+		//console.log('coucou depuis le script')
+	</script>
+	<script>
+	window.onload = function(){
+		var bt = document.getElementById('button')
+		var txt = document.getElementById('texte')
+		
+		if(window.Worker){
+			var wl = document.querySelector('#ilw').textContent
+			var blob = new Blob([wl])
+			var blobURL = window.URL.createObjectURL(blob);
+			var worker = new Worker(blobURL);
+			
+			worker.addEventListener('message', retourWorker, false);
+			bt.addEventListener('click', function(evt){
+				worker.postMessage(txt.value);
+			}, false)
+			
+		}else{
+		    alert("No Workers");
+		}
+		
+		function retourWorker(evt) {
+		  console.log(evt.data);
+		}
+		
+	}
+    </script>
+</head>
+<body>
+      <label for="texte">Page Française:</label>
+      <input type="text" name="texte" id="texte">
+      <input type="button" name="button" id="button" value="Envoyer">
+</body>
+</html>

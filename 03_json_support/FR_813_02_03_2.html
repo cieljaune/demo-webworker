@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Web Worker 03</title>
+	<script>
+	window.onload = function(){
+		var bt = document.getElementById('button')
+		var login = document.getElementById('login')
+		var pwd = document.getElementById('pwd')
+    	if(window.Worker){
+			var worker = new Worker("FR_813_02_03_2.js");
+			worker.addEventListener('message', retourWorker, false);
+			bt.addEventListener('click', function(evt){
+				var obj = {}
+				obj.login = login.value
+				obj.pwd = pwd.value
+				worker.postMessage(obj);
+			}, false)
+			
+		}else{
+		    alert("No Workers");
+		}
+		
+		function retourWorker(evt) {
+		  console.log(evt.data);
+		}
+		
+		
+	}
+    </script>
+</head>
+<body>
+      <label for="login">Login:</label>
+      <input type="text" name="login" id="login">
+       <label for="pwd">PWD:</label>
+      <input type="text" name="pwd" id="pwd">
+      <input type="button" name="button" id="button" value="Envoyer">
+</body>
+</html>
